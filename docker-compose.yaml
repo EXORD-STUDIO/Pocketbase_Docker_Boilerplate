@@ -1,10 +1,10 @@
-version: "3.7"
 services:
   pocketbase:
     build:
-      context: .
+      context: ./pb
+      dockerfile: Dockerfile
       args:
-        - VERSION=0.22.22 # <--------- Set the Pocketbase version here. It will be downloaded from their GitHub repo
+        - VERSION=0.22.24
     container_name: pocketbase
     restart: unless-stopped
 
@@ -14,8 +14,17 @@ services:
       - ./pb_data:/pb_data
       - ./pb_migrations:/pb_migrations #optional
       - ./pb_hooks:/pb_hooks #optional
-    healthcheck: #optional (recommended) since v0.10.0
+    healthcheck:
       test: wget --no-verbose --tries=1 --spider http://localhost:8080/api/health || exit 1
       interval: 5s
       timeout: 5s
       retries: 5
+  svelte-kit:
+    build:
+      context: .
+      dockerfile: .sk/Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+    command: [ "node", "build" ]
