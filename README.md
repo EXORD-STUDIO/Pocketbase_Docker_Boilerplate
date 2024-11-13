@@ -1,2 +1,3 @@
 # Pocketbase_Docker_Boilerplate
-Rdy to deploy
+
+Railway Template: https://railway.app/template/dyM12l
